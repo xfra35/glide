@@ -70,7 +70,7 @@ export default function (Glide, Components, Events) {
      * @return {Number}
      */
     get () {
-      return Sizes.slideWidth * Sizes.length + Components.Gaps.grow + Components.Clones.grow
+      return Sizes.slideWidth * Sizes.length + Components.Gaps.grow
     }
   })
 

@@ -6,9 +6,9 @@ import Gaps from '../src/components/gaps'
 import Html from '../src/components/html'
 import Peek from '../src/components/peek'
 import Move from '../src/components/move'
+import Loop from '../src/components/loop'
 import Sizes from '../src/components/sizes'
 import Build from '../src/components/build'
-import Clones from '../src/components/clones'
 import Resize from '../src/components/resize'
 import Direction from '../src/components/direction'
 import Translate from '../src/components/translate'
@@ -33,10 +33,10 @@ const COMPONENTS = {
   Sizes,
   Gaps,
   Move,
-  Clones,
   Resize,
   Build,
   Run,
+  Loop,
 
   // Optional
   Swipe,

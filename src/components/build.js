@@ -12,6 +12,9 @@ export default function (Glide, Components, Events) {
       Events.emit('build.before')
 
       this.activeClass()
+      this.positioning()
+
+      Components.Html.wrapper.style.height = `${Components.Html.slides[Glide.index].getBoundingClientRect().height}px`
 
       Events.emit('build.after')
     },
@@ -45,6 +48,14 @@ export default function (Glide, Components, Events) {
       Components.Html.slides.forEach((sibling) => {
         sibling.classList.remove(slide.active)
       })
+    },
+
+    positioning () {
+      for (var i = 0; i < Components.Html.slides.length; i++) {
+        Components.Html.slides[i].style.position = 'absolute'
+        Components.Html.slides[i].style.top = '0px'
+        Components.Html.slides[i].style.left = `${(Components.Sizes.slideWidth * i) + (Components.Gaps.value * i)}px`
+      }
     }
   }
 
