@@ -4,10 +4,11 @@ import supportsPassive from '../utils/detect-passive-event'
 
 import EventsBinder from '../core/event/events-binder'
 
+const ELEMENT_SELECTOR = '[data-glide-el]'
 const NAV_SELECTOR = '[data-glide-el="controls[nav]"]'
 const CONTROLS_SELECTOR = '[data-glide-el^="controls"]'
-const PREVIOUS_CONTROLS_SELECTOR = `${CONTROLS_SELECTOR} [data-glide-dir*="<"]`
-const NEXT_CONTROLS_SELECTOR = `${CONTROLS_SELECTOR} [data-glide-dir*=">"]`
+const PREVIOUS_CONTROLS_SELECTOR = '[data-glide-dir*="<"]'
+const NEXT_CONTROLS_SELECTOR = '[data-glide-dir*=">"]'
 
 export default function (Glide, Components, Events) {
   /**
@@ -31,17 +32,29 @@ export default function (Glide, Components, Events) {
        * Collection of navigation HTML elements.
        *
        * @private
-       * @type {HTMLCollection}
+       * @type {Array}
        */
-      this._n = Components.Html.root.querySelectorAll(NAV_SELECTOR)
+      this._n = []
+      Components.Html.root.querySelectorAll(NAV_SELECTOR).forEach(nav => {
+        const el = nav.parentElement.closest(ELEMENT_SELECTOR)
+        if (!el || !Components.Html.root.contains(el)) {
+          this._n.push(nav)
+        }
+      })
 
       /**
        * Collection of controls HTML elements.
        *
        * @private
-       * @type {HTMLCollection}
+       * @type {Array}
        */
-      this._c = Components.Html.root.querySelectorAll(CONTROLS_SELECTOR)
+      this._c = []
+      Components.Html.root.querySelectorAll(CONTROLS_SELECTOR).forEach(control => {
+        const el = control.parentElement.closest(ELEMENT_SELECTOR)
+        if (!el || !Components.Html.root.contains(el)) {
+          this._c.push(control)
+        }
+      })
 
       /**
        * Collection of arrow control HTML elements.
@@ -50,9 +63,17 @@ export default function (Glide, Components, Events) {
        * @type {Object}
        */
       this._arrowControls = {
-        previous: Components.Html.root.querySelectorAll(PREVIOUS_CONTROLS_SELECTOR),
-        next: Components.Html.root.querySelectorAll(NEXT_CONTROLS_SELECTOR)
+        previous: [],
+        next: []
       }
+      this._c.forEach(control => {
+        control.querySelectorAll(PREVIOUS_CONTROLS_SELECTOR).forEach(prev => {
+          this._arrowControls.previous.push(prev)
+        })
+        control.querySelectorAll(NEXT_CONTROLS_SELECTOR).forEach(next => {
+          this._arrowControls.next.push(next)
+        })
+      })
 
       this.addBindings()
     },
