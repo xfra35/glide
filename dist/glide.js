@@ -3086,6 +3086,7 @@
     return Anchors;
   }
 
+  var ELEMENT_SELECTOR = '[data-glide-el]';
   var NAV_SELECTOR = '[data-glide-el="controls[nav]"]';
   var CONTROLS_SELECTOR = '[data-glide-el^="controls"]';
 
@@ -3107,21 +3108,35 @@
        * @return {Void}
        */
       mount: function mount() {
+        var _this = this;
+
         /**
          * Collection of navigation HTML elements.
          *
          * @private
-         * @type {HTMLCollection}
+         * @type {Array}
          */
-        this._n = Components.Html.root.querySelectorAll(NAV_SELECTOR);
+        this._n = [];
+        Components.Html.root.querySelectorAll(NAV_SELECTOR).forEach(function (nav) {
+          var el = nav.parentElement.closest(ELEMENT_SELECTOR);
+          if (!el || !Components.Html.root.contains(el)) {
+            _this._n.push(nav);
+          };
+        });
 
         /**
          * Collection of controls HTML elements.
          *
          * @private
-         * @type {HTMLCollection}
+         * @type {Array}
          */
-        this._c = Components.Html.root.querySelectorAll(CONTROLS_SELECTOR);
+        this._c = [];
+        Components.Html.root.querySelectorAll(CONTROLS_SELECTOR).forEach(function (control) {
+          var el = control.parentElement.closest(ELEMENT_SELECTOR);
+          if (!el || !Components.Html.root.contains(el)) {
+            _this._c.push(control);
+          };
+        });
 
         this.addBindings();
       },
